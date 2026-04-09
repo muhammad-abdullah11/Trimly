@@ -26,4 +26,24 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ message: "Error creating short URL" }, { status: 500 });
     }
     
+};
+
+
+export async function GET() {
+
+    try {
+        await DbConnect();
+ 
+        const shortUrls = await ShortUrl.find();
+ 
+        return NextResponse.json({message:"ShortUrl fetched successfully", 
+            totalUrls:shortUrls.length,
+            urls: shortUrls}, { status: 200 });
+    
+    } catch (error) {
+ 
+        console.error("Error fetching short URLs:", error);
+        return NextResponse.json({ message: "Error fetching short URLs" }, { status: 500 });
+ 
+    }
 }
