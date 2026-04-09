@@ -1,6 +1,7 @@
 import { DbConnect } from "@/config/mongodb";
 import User from "@/Models/user.model";
 import { NextRequest,NextResponse } from "next/server";
+import { sendOTP } from "@/config/nodemailer";
 
 export async function POST(req: NextRequest) {
     try {
@@ -24,6 +25,15 @@ export async function POST(req: NextRequest) {
         
         const newUser = await User.create({ fullName, userName, email, password });
         
+        const otp = Math.floor(100000 + Math.random() * 900000);
+        const isOTPSent = await sendOTP(email, otp);
+        
+        if (!isOTPSent) {
+            return new Response(JSON.stringify({ message: "Failed to send OTP" }), { status: 500 });
+        }
+        newUser.VerifyOtp = otp;
+        newUser.VerifyOtpExpire = new Date(Date.now() + 5 * 60 * 1000);
+        await newUser.save();
 
         return NextResponse.json({ message: "User created successfully", user: newUser }, { status: 201 });
 
