@@ -3,6 +3,7 @@
         "cellspacing",
         "facebookexternalhit",
         "geoip",
-        "NEXTAUTH"
+        "NEXTAUTH",
+        "signups"
     ]
 }

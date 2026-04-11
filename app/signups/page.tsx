@@ -6,17 +6,28 @@ import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Login() {
+export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
     <main className="min-h-screen flex gap-12 py-12">
-     
+      <section className="hidden lg:flex lg:w-1/2 bg-gray-900 items-center justify-center p-8">
+            <div className="relative h-full w-full">
+        <Image
+        alt="Trimly Integrations"
+        src="https://d1ayxb9ooonjts.cloudfront.net/web_sign_up_sign_in/96a3ebd0-465c-4275-8be6-a831bdeb8daf/images/login-integrations.png"
+        fill
+        className="object-cover h-full w-full"
+        />
+
+            </div>
+      </section>
 
       <section className="w-full lg:w-1/2 flex items-center justify-center py-6 md:p-12">
         <div className="w-full max-w-md">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Log in and start sharing</h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Create your Trimly account</h1>
+            <p className="text-gray-500 text-sm">Start shortening links and tracking clicks</p>
           </div>
 
           <div className="space-y-3 mb-6">
@@ -41,7 +52,14 @@ export default function Login() {
           </div>
 
           <form className="space-y-4">
-         
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+              <input
+                type="text"
+                placeholder="Abdullah"
+                className="w-full border border-gray-300 rounded-lg py-3 px-4 text-gray-900 text-sm outline-none focus:border-blue-500"
+              />
+            </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
               <input
@@ -76,26 +94,13 @@ export default function Login() {
           </form>
 
           <p className="mt-6 text-center text-sm text-gray-500">
-            Don`t have an account?{" "}
-            <Link href="/signups" className="text-emerald-600 font-bold">
-              Sign up
+            Already have an account?{" "}
+            <Link href="/login" className="text-emerald-600 font-bold">
+              Sign in
             </Link>
           </p>
         </div>
       </section>
-
-       <section className="hidden lg:flex lg:w-1/2 bg-gray-900 items-center justify-center p-8">
-            <div className="relative h-full w-full">
-        <Image
-        alt="Trimly Integrations"
-        src="https://d1ayxb9ooonjts.cloudfront.net/web_sign_up_sign_in/96a3ebd0-465c-4275-8be6-a831bdeb8daf/images/login-integrations.png"
-        fill
-        className="object-cover h-full w-full"
-        />
-
-            </div>
-      </section>
-
     </main>
   );
 }
