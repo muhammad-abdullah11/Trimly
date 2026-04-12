@@ -28,11 +28,13 @@ export async function POST(req:NextRequest) {
         return NextResponse.json({message:"Otp is incorrect ,try again with Correct OTP"},{status:400})
     };
 
-    if( user.VerifyOtpExpire > Date.now()){
+    if( user.VerifyOtpExpire < Date.now()){
         return NextResponse.json({message:"Otp is expired ,try with new OTP"},{status:400})
     };
 
     user.isVerified = true;
+    user.VerifyOtp = undefined;
+    user.VerifyOtpExpire = undefined;
     await user.save();
 
     return NextResponse.json({message:"Account verified successfully"},{status:200})
