@@ -5,9 +5,34 @@ import {  FaFacebook, FaGithub } from "react-icons/fa";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import Image from "next/image";
 import Link from "next/link";
+import axios from "axios";
 
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
+  const [fullName, setFullName] = useState("Muhammad Abdullah");
+  const [email, setEmail] = useState("abdullah123@gmail.com");
+  const [password, setPassword] = useState("user1234");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
+
+
+  const handleSubmit = async (e : React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    setSuccess("");
+    try{
+      const res = await axios.post("/api/auth/signups", {fullName, email, password});
+      setSuccess(res.data.message || "Account created successfully! You can now log in.");
+    }
+    catch(err : any){
+      setError(err.response?.data?.message || "An error occurred while creating your account. Please try again.");
+    }
+    finally{
+      setLoading(false);
+    }
+  }
 
   return (
     <main className="min-h-screen flex gap-12 py-12">
@@ -25,6 +50,9 @@ export default function Signup() {
 
       <section className="w-full lg:w-1/2 flex items-center justify-center py-6 md:p-12">
         <div className="w-full max-w-md">
+
+      {error && <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">{error}</div>}
+      {success && <div className="mb-4 p-3 bg-green-100 text-green-700 rounded">{success}</div>}
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Create your Trimly account</h1>
             <p className="text-gray-500 text-sm">Start shortening links and tracking clicks</p>
@@ -51,11 +79,15 @@ export default function Signup() {
             <div className="flex-1 h-px bg-gray-300"></div>
           </div>
 
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={(e)=>{
+            handleSubmit(e);
+          }}>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
               <input
                 type="text"
+                  value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
                 placeholder="Abdullah"
                 className="w-full border border-gray-300 rounded-lg py-3 px-4 text-gray-900 text-sm outline-none focus:border-blue-500"
               />
@@ -64,6 +96,8 @@ export default function Signup() {
               <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
               <input
                 type="email"
+                  value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="name@example.com"
                 className="w-full border border-gray-300 rounded-lg py-3 px-4 text-gray-900 text-sm outline-none focus:border-blue-500"
               />
@@ -74,6 +108,8 @@ export default function Signup() {
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Create a password"
+                  value={password}
+                onChange={(e) => setPassword(e.target.value)}
                   className="w-full border border-gray-300 rounded-lg py-3 px-4 pr-10 text-gray-900 text-sm outline-none focus:border-blue-500"
                 />
                 <button
@@ -89,7 +125,7 @@ export default function Signup() {
               type="submit"
               className="w-full bg-emerald-600 text-white rounded-lg py-3 px-4 text-sm font-medium"
             >
-              Create Account
+              {loading ? "Creating Account..." : "Create Account"}
             </button>
           </form>
 
