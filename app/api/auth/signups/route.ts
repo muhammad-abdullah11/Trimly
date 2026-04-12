@@ -5,25 +5,20 @@ import { sendOTP } from "@/config/nodemailer";
 
 export async function POST(req: NextRequest) {
     try {
-        const { fullName, userName, email, password } = await req.json();
+        const { fullName, email, password } = await req.json();
 
-        if(!fullName || !userName || !email || !password) {
+        if(!fullName || !email || !password) {
             return new Response(JSON.stringify({ message: "All fields are required" }), { status: 400 });
         }
         
         await DbConnect();
     
-        const isUserNameTaken = await User.findOne({ userName });
-        if (isUserNameTaken) {
-            return new Response(JSON.stringify({ message: "Username already taken" }), { status: 400 });
-        }
-        
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             return new Response(JSON.stringify({ message: "User already exists" }), { status: 400 });
         }
         
-        const newUser = await User.create({ fullName, userName, email, password });
+        const newUser = await User.create({ fullName, email, password });
         
         const otp = Math.floor(100000 + Math.random() * 900000);
         const isOTPSent = await sendOTP(email, otp);
