@@ -22,8 +22,13 @@ const nextAuthOptions: NextAuthOptions = {
 
           const user = await User.findOne({ email: credentials.email }).select("+password");
 
+
           if (!user) {
             throw new Error("Invalid email or password");
+          }
+
+          if(user.isVerified === false) {
+            throw new Error("Please verify your email before logging in");
           }
 
           const isPasswordValid = await bcrypt.compare(

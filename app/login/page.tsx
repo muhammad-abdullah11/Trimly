@@ -5,9 +5,53 @@ import {  FaFacebook, FaGithub } from "react-icons/fa";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import Image from "next/image";
 import Link from "next/link";
+import { signIn, useSession } from "next-auth/react";
+import {useRouter} from "next/navigation"
 
 export default function Login() {
+
+  const router = useRouter() 
+  const {data:session} = useSession();
+  if(session){
+    router.push("/")
+  }
+
   const [showPassword, setShowPassword] = useState(false);
+  const [email,setEmail] = useState("abdullahworld111@gmail.com");
+  const [password,setPassword] = useState("user1234");
+  const [error,setError] = useState("");
+  const [success,setSuccess] = useState("");
+  const [loading,setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+
+    try {
+      setLoading(true);
+      const res = await signIn("Credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+      if (res?.error) {
+        setError("Invalid email or password.");
+      } else {
+        setSuccess("Login successful.");
+      }
+
+
+    } catch (error) {
+      setError("An error occurred during login. Please try again.");
+    }
+    finally{
+      setLoading(false);
+      setEmail("");
+      setPassword("");
+    }
+
+  }
 
   return (
     <main className="min-h-screen flex gap-12 py-12">
@@ -15,6 +59,9 @@ export default function Login() {
 
       <section className="w-full lg:w-1/2 flex items-center justify-center py-6 md:p-12">
         <div className="w-full max-w-md">
+          {error && <div className="mb-4 p-3 text-sm text-red-700 bg-red-100 rounded">{error}</div>}
+          {success && <div className="mb-4 p-3 text-sm text-green-700 bg-green-100 rounded">{success}</div>}
+
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Log in and start sharing</h1>
           </div>
@@ -40,12 +87,14 @@ export default function Login() {
             <div className="flex-1 h-px bg-gray-300"></div>
           </div>
 
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit}>
          
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
               <input
                 type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 placeholder="name@example.com"
                 className="w-full border border-gray-300 rounded-lg py-3 px-4 text-gray-900 text-sm outline-none focus:border-blue-500"
               />
@@ -56,6 +105,8 @@ export default function Login() {
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Create a password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="w-full border border-gray-300 rounded-lg py-3 px-4 pr-10 text-gray-900 text-sm outline-none focus:border-blue-500"
                 />
                 <button
@@ -68,10 +119,11 @@ export default function Login() {
               </div>
             </div>
             <button
+            disabled={loading}
               type="submit"
               className="w-full bg-emerald-600 text-white rounded-lg py-3 px-4 text-sm font-medium"
             >
-              Create Account
+              {loading ? "Logging in..." : "Login"}
             </button>
           </form>
 
