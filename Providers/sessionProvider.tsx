@@ -7,8 +7,10 @@ interface ProvidersProps{
     children:ReactNode;
 }
 
-export default function Providers({children}:ProvidersProps):JSX.Element{
-    <SessionProvider>
-        {children}
-    </SessionProvider>
+export default function Providers({children}:ProvidersProps){
+    return (
+        <SessionProvider>
+            {children}
+        </SessionProvider>
+    )
 }

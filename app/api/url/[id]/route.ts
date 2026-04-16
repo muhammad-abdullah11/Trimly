@@ -7,7 +7,7 @@ import { UAParser } from "ua-parser-js";
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
     console.log("Received ID for deletion:", id);
@@ -78,7 +78,7 @@ async function getIpInfo(ip: string) {
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
 
