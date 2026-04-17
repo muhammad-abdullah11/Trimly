@@ -4,9 +4,9 @@ import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import axios from 'axios'
 import Link from 'next/link'
-import { 
-    FiArrowLeft, FiLink, FiExternalLink, FiMousePointer, FiCalendar, 
-    FiGlobe, FiMonitor, FiCpu, FiShield, FiCheckCircle, FiXCircle, 
+import {
+    FiArrowLeft, FiLink, FiExternalLink, FiMousePointer, FiCalendar,
+    FiGlobe, FiMonitor, FiCpu, FiShield, FiCheckCircle, FiXCircle,
     FiNavigation, FiLock, FiUnlock, FiSmartphone, FiActivity
 } from 'react-icons/fi'
 
@@ -59,7 +59,7 @@ export default function UrlDetails({ params }: { params: any }) {
     const uniqueClicks = new Set(urlData.clickHistory.map((c: any) => c.hashedIp)).size;
     const vpnCount = urlData.clickHistory.filter((c: any) => c.isVpn).length;
     const botCount = urlData.clickHistory.filter((c: any) => c.isBot).length;
-    
+
     // Top Stats Helpers
     const getTop = (arr: any[], key: string) => {
         const counts = arr.reduce((acc: any, curr: any) => {
@@ -91,7 +91,7 @@ export default function UrlDetails({ params }: { params: any }) {
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                     {/* Main Analytics Container */}
                     <div className="lg:col-span-3 space-y-8">
-                        
+
                         {/* Hero Section */}
                         <div className="bg-white rounded-[2rem] p-8 shadow-sm border border-gray-100 relative overflow-hidden">
                             <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
@@ -127,7 +127,7 @@ export default function UrlDetails({ params }: { params: any }) {
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div className="flex gap-4">
                                     <div className="text-right">
                                         <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Total Hits</p>
@@ -229,7 +229,7 @@ export default function UrlDetails({ params }: { params: any }) {
                                                     <td className="px-8 py-6">
                                                         <div className="flex flex-col gap-1">
                                                             <div className="flex items-center gap-2 text-xs font-bold text-gray-700 uppercase tracking-tighter">
-                                                                {click.device === 'mobile' ? <FiSmartphone size={14} className="text-blue-500"/> : <FiMonitor size={14} className="text-emerald-500"/>}
+                                                                {click.device === 'mobile' ? <FiSmartphone size={14} className="text-blue-500" /> : <FiMonitor size={14} className="text-emerald-500" />}
                                                                 {click.browser} on {click.os}
                                                             </div>
                                                             <div className="text-[10px] text-gray-400 font-medium">Lang: {click.language || "un-dev"}</div>
@@ -268,11 +268,11 @@ export default function UrlDetails({ params }: { params: any }) {
 
                     {/* Right Column: Meta & Sidebar */}
                     <div className="space-y-8">
-                        
+
                         {/* Summary Action Card */}
                         <div className="bg-white rounded-[2rem] p-6 shadow-sm border border-gray-100">
-                             <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-6 border-b border-gray-50 pb-4">Destination Insight</h4>
-                             <div className="space-y-6">
+                            <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-6 border-b border-gray-50 pb-4">Destination Insight</h4>
+                            <div className="space-y-6">
                                 <div>
                                     <p className="text-[10px] font-black text-emerald-600 uppercase mb-2">Target Link</p>
                                     <a href={urlData.originalUrl} target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-gray-900 break-all hover:text-emerald-600 transition-colors flex items-start gap-2 group">
@@ -290,16 +290,16 @@ export default function UrlDetails({ params }: { params: any }) {
                                         <p className="text-xs font-black text-gray-900 uppercase"> {urlData.password ? 'Locked' : 'Standard'}</p>
                                     </div>
                                 </div>
-                             </div>
+                            </div>
                         </div>
 
                         {/* Referral Stats */}
                         <div className="bg-white rounded-[2rem] p-6 shadow-sm border border-gray-100">
-                             <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-6 flex items-center justify-between">
+                            <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-6 flex items-center justify-between">
                                 Referral Traffic
                                 <FiNavigation className="text-blue-500" />
-                             </h4>
-                             <div className="space-y-4">
+                            </h4>
+                            <div className="space-y-4">
                                 {Object.entries(urlData.clickHistory.reduce((acc: any, c: any) => {
                                     const dom = c.refererDomain || "Direct / No Referrer";
                                     acc[dom] = (acc[dom] || 0) + 1;
@@ -308,14 +308,14 @@ export default function UrlDetails({ params }: { params: any }) {
                                     <div key={domain} className="flex flex-col gap-1.5">
                                         <div className="flex justify-between text-[11px] font-bold">
                                             <span className="text-gray-600 truncate max-w-[120px]">{domain}</span>
-                                            <span className="text-gray-900">{( (count/urlData.clicks) * 100 ).toFixed(1)}%</span>
+                                            <span className="text-gray-900">{((count / urlData.clicks) * 100).toFixed(1)}%</span>
                                         </div>
                                         <div className="h-1 w-full bg-gray-50 rounded-full overflow-hidden">
-                                            <div className="h-full bg-blue-400" style={{ width: `${(count/urlData.clicks)*100}%` }}></div>
+                                            <div className="h-full bg-blue-400" style={{ width: `${(count / urlData.clicks) * 100}%` }}></div>
                                         </div>
                                     </div>
                                 ))}
-                             </div>
+                            </div>
                         </div>
 
                         {/* Audit Log Card */}
