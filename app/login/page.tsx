@@ -14,8 +14,8 @@ export default function Login() {
   const router = useRouter()
   const { data: session } = useSession();
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("abdullahworld@gmail.com");
+  const [password, setPassword] = useState("user1234");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
@@ -40,7 +40,12 @@ export default function Login() {
         redirect: false,
       });
       if (res?.error) {
-        setError("Invalid email or password.");
+        try {
+          const parsed = JSON.parse(res.error);
+          setError(parsed.message || "Invalid email or password.");
+        } catch {
+          setError("Invalid email or password.");
+        }
       } else {
         setSuccess("Login successful.");
       }

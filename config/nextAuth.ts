@@ -14,42 +14,36 @@ const nextAuthOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        try {
-          if (!credentials?.email || !credentials?.password) {
-            throw new Error("Email and password are required");
-          }
-
-          await DbConnect();
-
-          const user = await User.findOne({ email: credentials.email }).select("+password");
-
-
-          if (!user) {
-            throw new Error("Invalid email or password");
-          }
-
-          if (user.isVerified === false) {
-            throw new Error("Please verify your email before logging in");
-          }
-
-          const isPasswordValid = await bcrypt.compare(
-            credentials.password,
-            user.password
-          );
-
-          if (!isPasswordValid) {
-            throw new Error("Invalid email or password");
-          }
-
-          return {
-            id: user._id.toString(),
-            email: user.email,
-            fullName: user.fullName
-          };
-        } catch (error) {
-          console.error("Auth Error:", error);
-          return null;
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error(JSON.stringify({ message: "Email and password are required" }));
         }
+
+        await DbConnect();
+
+        const user = await User.findOne({ email: credentials.email }).select("+password");
+
+        if (!user) {
+          throw new Error(JSON.stringify({ message: "Invalid email or password" }));
+        }
+
+        if (user.isVerified !== true) {
+          throw new Error(JSON.stringify({ message: "Please verify your email before logging in" }));
+        }
+
+        const isPasswordValid = await bcrypt.compare(
+          credentials.password,
+          user.password
+        );
+
+        if (!isPasswordValid) {
+          throw new Error(JSON.stringify({ message: "Invalid email or password" }));
+        }
+
+        return {
+          id: user._id.toString(),
+          email: user.email,
+          fullName: user.fullName
+        };
       }
     }),
     GoogleProvider({
