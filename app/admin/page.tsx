@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import axios from 'axios'
 import { FiLink, FiExternalLink, FiUser, FiMousePointer, FiCalendar, FiCheckCircle, FiXCircle, FiTrendingUp } from 'react-icons/fi'
-
+import Link from 'next/link'
 export default function AdminDashboard() {
     const { data: session, status } = useSession();
     const router = useRouter();
@@ -70,11 +70,11 @@ export default function AdminDashboard() {
                             <tbody className="divide-y divide-gray-100">
                                 {urls.map((url: any) => (
                                     <tr key={url._id} className="hover:bg-gray-50/50 transition-colors">
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center gap-2 text-emerald-600 font-mono text-sm font-semibold">
+                                        <td className="px-6 py-4 text-emerald-600 font-mono text-sm font-semibold hover:underline">
+                                            <Link href={`/admin/url/${url._id}`} className="flex items-center gap-2">
                                                 <FiLink size={14} />
                                                 <span>{url.shortUrl}</span>
-                                            </div>
+                                            </Link>
                                         </td>
                                         <td className="px-6 py-4 max-w-xs">
                                             <div className="flex items-center gap-2 text-gray-600 text-sm truncate">
