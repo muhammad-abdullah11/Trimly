@@ -7,21 +7,24 @@ import Image from "next/image";
 import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
 import {useRouter} from "next/navigation"
+import { useEffect } from "react";
 
 export default function Login() {
 
   const router = useRouter() 
   const {data:session} = useSession();
-  if(session){
-    router.push("/")
-  }
-
   const [showPassword, setShowPassword] = useState(false);
   const [email,setEmail] = useState("abdullahworld111@gmail.com");
   const [password,setPassword] = useState("user1234");
   const [error,setError] = useState("");
   const [success,setSuccess] = useState("");
   const [loading,setLoading] = useState(false);
+
+  useEffect(() => {
+    if (session) {
+      router.push("/");
+    }
+  }, [session, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,7 +33,7 @@ export default function Login() {
 
     try {
       setLoading(true);
-      const res = await signIn("Credentials", {
+      const res = await signIn("credentials", {
         email,
         password,
         redirect: false,
