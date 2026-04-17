@@ -40,7 +40,12 @@ export async function GET() {
     try {
         await DbConnect();
 
-        const shortUrls = await ShortUrl.find();
+        const session = await getServerSession(authOptions);
+        if (!session) {
+            return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+        };
+
+        const shortUrls = await ShortUrl.find({ userId: session.user.id }).sort({ createdAt: -1 }).select("originalUrl shortUrl clicks");
 
         return NextResponse.json({
             message: "ShortUrl fetched successfully",
