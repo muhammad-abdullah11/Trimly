@@ -187,7 +187,9 @@ export default function Login() {
               {loading ? "Logging in..." : "Login"}
             </button>
           </form>
-
+          <Link href="/reset-password" className="text-red-600 font-mono text-sm">
+            Forgot Password?
+          </Link>
           <p className="mt-6 text-center text-sm text-gray-500">
             Don`t have an account?{" "}
             <Link href="/signups" className="text-emerald-600 font-bold">
