@@ -12,7 +12,7 @@ interface UrlsProps {
 
 const Urls = () => {
     const [urls, setUrls] = useState<UrlsProps[]>([]);
-    const appBaseUrl = process.env.APP_URL || "http://localhost:3000/api/url";
+    const appBaseUrl = process.env.APP_URL || "http://localhost:3000";
 
     useEffect(() => {
         const fetchUrls = async () => {
@@ -40,11 +40,11 @@ const Urls = () => {
                             <div key={url.shortUrl} className="flex flex-col gap-4 border border-gray-300 rounded-lg p-4">
                                 <div className="flex items-center gap-2">
                                     <label className="text-lg font-bold">Original URL</label>
-                                    <h2 className="text-xs font-mono">{url.originalUrl}</h2>
+                                    <h2 className="text-xs font-mono line-clamp-1">{url.originalUrl}</h2>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <label className="text-lg font-bold">Short URL</label>
-                                    <h2 className="text-xs font-mono">{appBaseUrl}/{url.shortUrl}</h2>
+                                    <h2 className="text-xs font-mono line-clamp-1">{appBaseUrl}/{url.shortUrl}</h2>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <label className="text-lg font-bold">Clicks</label>
@@ -65,6 +65,6 @@ const Urls = () => {
 export default Urls
 
 function copyToClipboard(text: string) {
-    const appBaseUrl = process.env.APP_URL || "http://localhost:3000/api/url";
+    const appBaseUrl = process.env.APP_URL || "http://localhost:3000/";
     navigator.clipboard.writeText(appBaseUrl + "/" + text);
 }
