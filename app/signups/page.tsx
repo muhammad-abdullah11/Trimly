@@ -1,14 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaFacebook, FaGithub } from "react-icons/fa";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import Image from "next/image";
 import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { signIn, useSession } from "next-auth/react";
 
 export default function Signup() {
+
+  const { data: session } = useSession();
   const [showPassword, setShowPassword] = useState(false);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -16,7 +19,14 @@ export default function Signup() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    if (session) {
+      router.push("/");
+    }
+  }, [session, router]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -33,6 +43,25 @@ export default function Signup() {
     }
     finally {
       setLoading(false);
+    }
+  }
+
+  const handleGoogleSignIn = async () => {
+    try {
+      setIsGoogleLoading(true);
+      const res = await signIn("google", {
+        redirect: false,
+      });
+      if (res?.error) {
+        setError("Invalid email or password.");
+      } else {
+        setSuccess("Login successful.");
+      }
+    } catch (error) {
+      setError("An error occurred during login. Please try again.");
+    }
+    finally {
+      setIsGoogleLoading(false);
     }
   }
 
@@ -61,9 +90,12 @@ export default function Signup() {
           </div>
 
           <div className="space-y-3 mb-6">
-            <button className="w-full flex items-center justify-center gap-3 border border-gray-300 rounded-lg py-3 px-4 text-gray-700 bg-white">
+            <button
+              onClick={handleGoogleSignIn}
+              disabled={isGoogleLoading}
+              className="w-full flex items-center justify-center gap-3 border border-gray-300 rounded-lg py-3 px-4 text-gray-700 bg-white">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"><path fill="#2A5BD7" d="M15.078 15.625c1.758-1.64 2.54-4.375 2.07-6.992h-6.992v2.89h3.985c-.157.938-.703 1.72-1.485 2.227z"></path><path fill="#34A853" d="M3.516 13.32a7.5 7.5 0 0 0 11.562 2.305l-2.422-1.875c-2.07 1.367-5.508.86-6.68-2.344z"></path><path fill="#FBBC02" d="M5.975 11.406a4.45 4.45 0 0 1 0-2.851L3.515 6.64c-.9 1.797-1.173 4.336 0 6.68z"></path><path fill="#EA4335" d="M5.977 8.555c.859-2.696 4.53-4.258 6.992-1.954l2.148-2.109C12.07 1.562 6.133 1.68 3.516 6.641z"></path></svg>
-              <span className="text-sm font-medium">Continue with Google</span>
+              <span className="text-sm font-medium">{isGoogleLoading ? "signing in..." : "Continue with Google"}</span>
             </button>
             <button className="w-full flex items-center justify-center gap-3 border border-gray-300 rounded-lg py-3 px-4 text-gray-700 bg-white">
               <FaFacebook className="text-blue-600 text-lg" />

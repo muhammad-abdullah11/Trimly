@@ -1,6 +1,35 @@
-import { FaLink } from "react-icons/fa";
+"use client";
+import { FaLink, FaSpinner } from "react-icons/fa";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
 const HeroSection = () => {
+  const { data: session } = useSession();
+  const [originalUrl, setOriginalUrl] = useState("");
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  const handleShorten = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (!originalUrl) return;
+    if (!session) return router.push("/login");
+    setLoading(true);
+    try {
+      const res = await axios.post("/api/url", { originalUrl });
+      alert(res.data.message);
+      console.log(res.data);
+    } catch (error: any) {
+      console.log(error);
+      alert("Error shortening URL" + error.message);
+    } finally {
+      setLoading(false);
+      setOriginalUrl("");
+    }
+
+  }
+
   return (
     <main className="min-h-screen bg-gray-50 pt-16 flex items-center justify-center">
       <div className="max-w-3xl mx-auto px-6 text-center">
@@ -18,9 +47,11 @@ const HeroSection = () => {
             type="text"
             placeholder="Paste your URL here"
             className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            value={originalUrl}
+            onChange={(e) => setOriginalUrl(e.target.value)}
           />
-          <button className="px-6 py-3 bg-emerald-500 text-white font-semibold rounded-lg hover:bg-emerald-600">
-            Shorten
+          <button onClick={handleShorten} disabled={loading} className="px-6 py-3 bg-emerald-500 text-white font-semibold rounded-lg hover:bg-emerald-600">
+            {loading ? <FaSpinner className="animate-spin" /> : "Shorten"}
           </button>
         </div>
       </div>
