@@ -8,14 +8,17 @@ import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation"
 import { useEffect } from "react";
+import axios from "axios";
 
 export default function Login() {
 
   const router = useRouter()
   const { data: session } = useSession();
+
+  const [showVerifyLink, setShowVerifyLink] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("abdullahworld@gmail.com");
-  const [password, setPassword] = useState("user1234");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
@@ -31,6 +34,7 @@ export default function Login() {
     e.preventDefault();
     setError("");
     setSuccess("");
+    setShowVerifyLink(false);
 
     try {
       setLoading(true);
@@ -43,11 +47,16 @@ export default function Login() {
         try {
           const parsed = JSON.parse(res.error);
           setError(parsed.message || "Invalid email or password.");
+          if (parsed.message == "Please verify your email before logging in") {
+            setShowVerifyLink(true);
+          }
         } catch {
           setError("Invalid email or password.");
         }
       } else {
         setSuccess("Login successful.");
+        setEmail("");
+        setPassword("");
       }
 
 
@@ -56,8 +65,6 @@ export default function Login() {
     }
     finally {
       setLoading(false);
-      setEmail("");
-      setPassword("");
     }
 
   }
@@ -81,6 +88,23 @@ export default function Login() {
     }
   }
 
+  const handleResendVerificationEmail = async () => {
+    setError("");
+    setSuccess("");
+    try {
+      setLoading(true);
+      const res = await axios.post("/api/user/resend-verification-email", { email });
+      setSuccess(res.data.message || "Verification email sent successfully.");
+      router.push(`/verify-account/${encodeURIComponent(email)}`);
+
+    } catch (error: any) {
+      setError(error.response?.data?.message || "An error occurred while sending verification email. Please try again.");
+    }
+    finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <main className="min-h-screen flex gap-12 py-12">
 
@@ -89,7 +113,13 @@ export default function Login() {
         <div className="w-full max-w-md">
           {error && <div className="mb-4 p-3 text-sm text-red-700 bg-red-100 rounded">{error}</div>}
           {success && <div className="mb-4 p-3 text-sm text-green-700 bg-green-100 rounded">{success}</div>}
-
+          {showVerifyLink && (
+            <div
+              onClick={handleResendVerificationEmail}
+              className="mb-4 p-3 text-sm text-blue-700 bg-blue-100 rounded">
+              <h2 className="cursor-pointer text-blue-600 hover:underline">verify your email</h2>
+            </div>
+          )}
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Log in and start sharing</h1>
           </div>
