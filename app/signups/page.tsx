@@ -10,9 +10,9 @@ import { useRouter } from "next/navigation";
 
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
-  const [fullName, setFullName] = useState("Muhammad Abdullah");
-  const [email, setEmail] = useState("abdullahworld111@gmail.com");
-  const [password, setPassword] = useState("user1234");
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);

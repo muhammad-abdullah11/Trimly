@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const  DbConnect = async () => {
-    const mongoUrl = process.env.MONGO_URL;
+    const mongoUrl = process.env.LOCAL_HOST_MONGO_URL;
     if(!mongoUrl){
         throw new Error("MongoDb Url are required")
     };

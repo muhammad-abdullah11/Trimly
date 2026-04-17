@@ -63,7 +63,7 @@ const VerifyAccountClient = ({ email }: VerifyAccountClientProps) => {
     setStatus("loading");
     setMessage("");
     try {
-      const res = await axios.post("/api/verify-account", { email: decodedEmail, otp });
+      const res = await axios.post("/api/user/verify-account", { email: decodedEmail, otp });
       setStatus("success");
       setMessage(res.data.message || "Account verified successfully!");
     } catch (err) {

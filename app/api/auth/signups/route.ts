@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     
         const existingUser = await User.findOne({ email });
         if (existingUser) {
-            return new Response(JSON.stringify({ message: "User already exists" }), { status: 400 });
+            return new Response(JSON.stringify({ message: "User with this email already exists, try different email" }), { status: 400 });
         }
         
         const newUser = await User.create({ fullName, email, password });
@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
         newUser.VerifyOtpExpire = new Date(Date.now() + 5 * 60 * 1000);
         await newUser.save();
 
-        return NextResponse.json({ message: "User created successfully", user: newUser }, { status: 201 });
+        return NextResponse.json({ message: "User created successfully" }, { status: 201 });
 
     } catch (error) {
         
