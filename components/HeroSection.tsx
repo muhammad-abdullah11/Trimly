@@ -44,7 +44,10 @@ const HeroSection = () => {
         </p>
         <div className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
           <input
-            type="text"
+            type="url"
+            required
+            onInvalid={(e) => (e.target as HTMLInputElement).setCustomValidity("Please enter a valid URL")}
+            onInput={(e) => (e.target as HTMLInputElement).setCustomValidity("")}
             placeholder="Paste your URL here"
             className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
             value={originalUrl}
