@@ -2,7 +2,7 @@ import { DbConnect } from "@/config/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 import ShortUrl from "@/Models/shortUrl.model";
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
         await DbConnect();
         const { id } = await params;
