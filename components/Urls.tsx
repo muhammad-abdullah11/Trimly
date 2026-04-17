@@ -12,6 +12,7 @@ interface UrlsProps {
 
 const Urls = () => {
     const [urls, setUrls] = useState<UrlsProps[]>([]);
+    const appBaseUrl = process.env.APP_URL || "http://localhost:3000/api/url";
 
     useEffect(() => {
         const fetchUrls = async () => {
@@ -43,7 +44,7 @@ const Urls = () => {
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <label className="text-lg font-bold">Short URL</label>
-                                    <h2 className="text-xs font-mono">{url.shortUrl}</h2>
+                                    <h2 className="text-xs font-mono">{appBaseUrl}/{url.shortUrl}</h2>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <label className="text-lg font-bold">Clicks</label>
@@ -64,5 +65,6 @@ const Urls = () => {
 export default Urls
 
 function copyToClipboard(text: string) {
-    navigator.clipboard.writeText(text);
+    const appBaseUrl = process.env.APP_URL || "http://localhost:3000/api/url";
+    navigator.clipboard.writeText(appBaseUrl + "/" + text);
 }

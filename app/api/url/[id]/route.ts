@@ -10,7 +10,7 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-    console.log("Received ID for deletion:", id);
+  console.log("Received ID for deletion:", id);
 
   if (!id) {
     return NextResponse.json({ message: "ID is required" }, { status: 400 });
@@ -92,7 +92,7 @@ export async function GET(
   try {
     await DbConnect();
 
-    const shortUrl = await ShortUrl.findById(id);
+    const shortUrl = await ShortUrl.findOne({ shortUrl: id });
 
     if (!shortUrl) {
       return NextResponse.json(
