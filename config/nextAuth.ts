@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { DbConnect } from "./mongodb";
 import User from "@/Models/user.model";
 import bcrypt from "bcryptjs";
+import GoogleProvider from "next-auth/providers/google";
 
 const nextAuthOptions: NextAuthOptions = {
   providers: [
@@ -50,7 +51,11 @@ const nextAuthOptions: NextAuthOptions = {
           return null;
         }
       }
-    })
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
   ],
 
   callbacks: {
