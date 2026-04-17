@@ -42,7 +42,8 @@ const nextAuthOptions: NextAuthOptions = {
         return {
           id: user._id.toString(),
           email: user.email,
-          fullName: user.fullName
+          fullName: user.fullName,
+          type: user.type
         };
       }
     }),
@@ -58,6 +59,7 @@ const nextAuthOptions: NextAuthOptions = {
         token.id = user.id;
         token.email = user.email;
         token.fullName = user.fullName;
+        token.type = user.type;
       }
       return token;
     },
@@ -67,6 +69,7 @@ const nextAuthOptions: NextAuthOptions = {
         session.user.id = token.id as string;
         session.user.email = token.email as string;
         session.user.fullName = token.fullName as string;
+        session.user.type = token.type as string;
       }
       return session;
     }
