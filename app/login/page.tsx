@@ -106,11 +106,10 @@ export default function Login() {
   }
 
   return (
-    <main className="min-h-screen flex gap-12 py-12">
+    <main className="min-h-screen flex flex-col lg:flex-row lg:gap-12 px-4 py-8 sm:px-6 md:py-12 lg:px-0">
 
-
-      <section className="w-full lg:w-1/2 flex items-center justify-center py-6 md:p-12">
-        <div className="w-full max-w-md">
+      <section className="w-full lg:w-1/2 flex items-center justify-center py-4 sm:py-6 md:p-12">
+        <div className="w-full max-w-md py-4">
           {error && <div className="mb-4 p-3 text-sm text-red-700 bg-red-100 rounded">{error}</div>}
           {success && <div className="mb-4 p-3 text-sm text-green-700 bg-green-100 rounded">{success}</div>}
           {showVerifyLink && (
