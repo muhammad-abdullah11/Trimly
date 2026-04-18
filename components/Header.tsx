@@ -24,7 +24,7 @@ const Header = () => {
             session ? (
               <div className="hidden md:flex items-center space-x-4">
                 <div className="flex items-center space-x-2">
-                  <h1 className="text-gray-700 font-medium cursor-pointer border-2 border-emerald-600 px-4 py-2 rounded-lg hover:bg-emerald-600 hover:text-white transition-colors">{session.user.fullName}</h1>
+                  <h1 className="text-gray-700 font-medium cursor-pointer border-2 border-emerald-600 px-4 py-2 rounded-lg hover:bg-emerald-600 hover:text-white transition-colors">{session.user.fullName || session.user.email}</h1>
                 </div>
                 <button onClick={() => signOut()} className="px-4 py-2 bg-red-500 text-white font-medium rounded-lg hover:bg-emerald-600 transition-colors">
                   Logout
@@ -56,14 +56,25 @@ const Header = () => {
 
         {isMenuOpen && (
           <div className="md:hidden pb-4 border-t border-t-gray-400">
-            <div className="flex flex-col space-y-3">
-              <button className="px-4 py-2 text-gray-700 font-medium hover:text-emerald-600 text-left">
-                Login
-              </button>
-              <button className="px-4 py-2 bg-emerald-500 text-white font-medium rounded-lg hover:bg-emerald-600 text-center">
-                Signup
-              </button>
-            </div>
+            {
+              session ? (
+                <div className="flex flex-col space-y-3">
+                  <h1 className="text-gray-700 font-medium cursor-pointer border-2 border-emerald-600 px-4 py-2 rounded-lg hover:bg-emerald-600 hover:text-white transition-colors">{session.user.fullName || session.user.email}</h1>
+                  <button onClick={() => signOut()} className="px-4 py-2 bg-red-500 text-white font-medium rounded-lg hover:bg-emerald-600 transition-colors">
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <div className="flex flex-col space-y-3">
+                  <Link href="/login" className="px-4 py-2 text-gray-700 font-medium hover:text-emerald-600 text-left">
+                    Login
+                  </Link>
+                  <Link href="/signups" className="px-4 py-2 bg-emerald-500 text-white font-medium rounded-lg hover:bg-emerald-600 text-center">
+                    Signup
+                  </Link>
+                </div>
+              )
+            }
           </div>
         )}
       </nav>
