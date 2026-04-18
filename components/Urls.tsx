@@ -37,22 +37,23 @@ const Urls = () => {
                     </div>
                     <section className="grid py-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {urls.map((url) => (
-                            <div key={url.shortUrl} className="flex flex-col gap-4 border border-gray-300 rounded-lg p-4">
-                                <div className="flex items-center gap-2">
-                                    <label className="text-lg font-bold">Original URL</label>
-                                    <h2 className="text-xs font-mono line-clamp-1">{url.originalUrl}</h2>
+                            <div key={url.shortUrl} className="flex flex-col gap-4 border border-gray-300 rounded-lg p-4 w-full overflow-hidden">
+                                <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 w-full">
+                                    <label className="text-sm sm:text-lg font-bold whitespace-nowrap">Original URL</label>
+                                    <h2 className="text-xs font-mono truncate min-w-0 w-full">{url.originalUrl}</h2>
                                 </div>
-                                <div className="flex items-center gap-2">
-                                    <label className="text-lg font-bold">Short URL</label>
-                                    <h2 className="text-xs font-mono line-clamp-1">{appBaseUrl}/{url.shortUrl}</h2>
+                                <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 w-full">
+                                    <label className="text-sm sm:text-lg font-bold whitespace-nowrap">Short URL</label>
+                                    <h2 className="text-xs font-mono truncate min-w-0 w-full">{appBaseUrl}/{url.shortUrl}</h2>
                                 </div>
-                                <div className="flex items-center gap-2">
-                                    <label className="text-lg font-bold">Clicks</label>
-                                    <h2 className="text-lg">{url.clicks}</h2>
+                                <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 w-full">
+                                    <label className="text-sm sm:text-lg font-bold whitespace-nowrap">Clicks</label>
+                                    <h2 className="text-sm sm:text-lg min-w-0">{url.clicks}</h2>
                                 </div>
-                                <button onClick={() => copyToClipboard(url.shortUrl)} className="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500 hover:bg-emerald-500 hover:text-white transition-colors duration-200 ">Copy</button>
-                                <button onClick={() => deleteUrl(url._id)} className="px-4 py-2 rounded-lg cursor-pointer bg-red-500 hover:bg-red-700 text-white transition-colors duration-200 ">Delete</button>
-
+                                <div className="flex flex-col sm:flex-row gap-2 mt-2 w-full">
+                                    <button onClick={() => copyToClipboard(url.shortUrl)} className="flex-1 px-4 py-2 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500 hover:bg-emerald-500 hover:text-white transition-colors duration-200">Copy</button>
+                                    <button onClick={() => deleteUrl(url._id)} className="flex-1 px-4 py-2 rounded-lg cursor-pointer bg-red-500 hover:bg-red-700 text-white transition-colors duration-200">Delete</button>
+                                </div>
                             </div>
                         ))}
                     </section>
