@@ -66,7 +66,7 @@ export default function Signup() {
   }
 
   return (
-    <main className="min-h-screen flex gap-12 py-12">
+    <main className="min-h-screen flex flex-col lg:flex-row lg:gap-12 px-4 py-8 sm:px-6 md:py-12 lg:px-0">
       <section className="hidden lg:flex lg:w-1/2 bg-gray-900 items-center justify-center p-8">
         <div className="relative h-full w-full">
           <Image
@@ -79,8 +79,8 @@ export default function Signup() {
         </div>
       </section>
 
-      <section className="w-full lg:w-1/2 flex items-center justify-center py-6 md:p-12">
-        <div className="w-full max-w-md">
+      <section className="w-full lg:w-1/2 flex items-center justify-center py-4 sm:py-6 md:p-12">
+        <div className="w-full max-w-md py-4">
 
           {error && <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">{error}</div>}
           {success && <div className="mb-4 p-3 bg-green-100 text-green-700 rounded">{success}</div>}
